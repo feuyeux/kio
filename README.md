@@ -3,8 +3,6 @@
 
 - [x] program language-agnostic interface
 - [x] authentication and authorization
-- [ ] service registry and discovery
-- [ ] load balance
 - [ ] tracing and accounting
 - [ ] kio status code
 - [ ] blacklist
