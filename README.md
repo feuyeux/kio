@@ -41,7 +41,6 @@ bash run_requester.sh
 ```
 
 ## Test
-curl_test.sh
 ```bash
-
+curl_test.sh
 ```

@@ -6,7 +6,7 @@ mvn clean install -DskipTests
 echo
 cd $BUILD_DIR/kio-responder
 echo "build responder jar"
-mvn clean package -DskipTests -U
+mvn clean package -DskipTests
 echo
 cd $BUILD_DIR/kio-requester
 echo "build requester jar"
