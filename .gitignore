@@ -1,0 +1,53 @@
+### Intellij ###
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+.gradle
+build/
+out/
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Sonarlint plugin
+.idea/sonarlint
+
+### Java ###
+*.class
+*.log
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+### Gradle ###
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+.DS_Store
+
+.vscode
+.project
+
+go.sum
+
+Cargo.lock
+target/
+*/.factorypath
+*/.classpath
+*/.settings/
+/.settings/
+/.classpath
+*.crt
+*.csr
+*.key
+*.pem
+*.jks
+*.srl
+*.p12

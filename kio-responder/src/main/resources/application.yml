@@ -1,0 +1,5 @@
+spring:
+  rsocket:
+    server:
+      port: 7878
+      transport: tcp
