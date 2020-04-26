@@ -24,7 +24,10 @@ kio is a secure io demonstration, for Token-based RSocket Communication.
 
 ## Workflow
 
+<img src="img/workflow.png" alt="kio_workflow" style="zoom:80%;" />
+
 ##### ports
+
 - webflux: http 8989
 - rsocket: tcp  7878
 
