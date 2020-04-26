@@ -1,4 +1,4 @@
-package org.feuyeux.kio.secure.db;
+package org.feuyeux.kio.repository.token;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

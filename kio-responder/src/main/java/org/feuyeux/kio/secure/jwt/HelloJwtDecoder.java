@@ -1,7 +1,7 @@
 package org.feuyeux.kio.secure.jwt;
 
 import org.feuyeux.kio.pojo.secure.HelloUser;
-import org.feuyeux.kio.secure.db.HelloTokenRepository;
+import org.feuyeux.kio.repository.token.HelloTokenRepository;
 import org.feuyeux.kio.utils.BeanUtils;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtException;

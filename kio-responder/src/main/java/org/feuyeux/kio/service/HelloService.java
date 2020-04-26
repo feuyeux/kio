@@ -3,6 +3,7 @@ package org.feuyeux.kio.service;
 import lombok.extern.java.Log;
 import org.feuyeux.kio.pojo.HelloRequest;
 import org.feuyeux.kio.pojo.HelloResponse;
+import org.feuyeux.kio.repository.resource.HelloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

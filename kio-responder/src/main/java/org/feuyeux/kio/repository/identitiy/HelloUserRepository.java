@@ -1,4 +1,4 @@
-package org.feuyeux.kio.secure.db;
+package org.feuyeux.kio.repository.identitiy;
 
 import org.feuyeux.kio.pojo.secure.HelloUser;
 import org.springframework.stereotype.Repository;

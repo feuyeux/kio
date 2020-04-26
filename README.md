@@ -1,4 +1,5 @@
-# Token-based RSocket springboot demonstration
+# KIO
+kio is a secure io demonstration, for Token-based RSocket Communication.
 
 ## Feature
 
@@ -22,9 +23,16 @@
 | fire    | take and verify Access Token from Header, authorize and remove the employee | Request/Response  | admin         |
 
 ## Workflow
+
 ##### ports
 - webflux: http 8989
 - rsocket: tcp  7878
+
+## Development
+- [x] Java/SpringBoot
+- [ ] Golang
+- [ ] Rust
+- [ ] Nodejs
 
 ## Build
 ```bash

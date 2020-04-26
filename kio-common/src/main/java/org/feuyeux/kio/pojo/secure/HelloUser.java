@@ -1,9 +1,6 @@
 package org.feuyeux.kio.pojo.secure;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * @author feuyeux@gmail.com
@@ -12,8 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class HelloUser {
     private String userId;
+    @EqualsAndHashCode.Exclude
     private String password;
     private String role;
 }

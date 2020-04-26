@@ -1,4 +1,4 @@
-package org.feuyeux.kio.service;
+package org.feuyeux.kio.repository.resource;
 
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * @author feuyeux@gmail.com
+ *
+ * https://en.wikipedia.org/wiki/Eighteen_Arhats
  */
 @Repository
 public class HelloRepository {
@@ -15,22 +17,22 @@ public class HelloRepository {
 
     @PostConstruct
     public void init() {
-        employeeTable.put(1L, "坐鹿罗汉");
-        employeeTable.put(2L, "欢喜罗汉");
-        employeeTable.put(3L, "举钵罗汉");
-        employeeTable.put(4L, "托塔罗汉");
-        employeeTable.put(5L, "静坐罗汉");
-        employeeTable.put(6L, "过江罗汉");
-        employeeTable.put(7L, "骑象罗汉");
-        employeeTable.put(8L, "笑狮罗汉");
-        employeeTable.put(9L, "开心罗汉");
-        employeeTable.put(10L, "探手罗汉");
-        employeeTable.put(11L, "沉思罗汉");
-        employeeTable.put(12L, "挖耳罗汉");
-        employeeTable.put(13L, "布袋罗汉");
-        employeeTable.put(14L, "芭蕉罗汉");
-        employeeTable.put(15L, "长眉罗汉");
-        employeeTable.put(16L, "看门罗汉");
+        employeeTable.put(1L, "騎鹿羅漢");
+        employeeTable.put(2L, "喜慶羅漢");
+        employeeTable.put(3L, "舉缽羅漢");
+        employeeTable.put(4L, "托塔羅漢");
+        employeeTable.put(5L, "靜座羅漢");
+        employeeTable.put(6L, "過江羅漢");
+        employeeTable.put(7L, "騎象羅漢");
+        employeeTable.put(8L, "笑獅羅漢");
+        employeeTable.put(9L, "開心羅漢");
+        employeeTable.put(10L, "探手羅漢;");
+        employeeTable.put(11L, "沉思羅漢");
+        employeeTable.put(12L, "挖耳羅漢");
+        employeeTable.put(13L, "布袋羅漢");
+        employeeTable.put(14L, "芭蕉羅漢");
+        employeeTable.put(15L, "长眉羅漢");
+        employeeTable.put(16L, "看門羅漢");
     }
 
     public void store(long id, String name) {

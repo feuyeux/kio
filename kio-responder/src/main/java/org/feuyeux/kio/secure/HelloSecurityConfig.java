@@ -13,13 +13,13 @@ import static org.feuyeux.kio.pojo.secure.HelloRole.USER;
 public class HelloSecurityConfig {
     protected RSocketSecurity pattern(RSocketSecurity security) {
         return security.authorizePayload(authorize -> authorize
-                .route("signin").permitAll()
-                .route("refresh").permitAll()
-                .route("signout").authenticated()
-                .route("hire").hasRole(ADMIN)
-                .route("fire").hasRole(ADMIN)
-                .route("info").hasAnyRole(USER, ADMIN)
-                .route("list").hasAnyRole(USER, ADMIN)
+                .route("signin.v1").permitAll()
+                .route("refresh.v1").permitAll()
+                .route("signout.v1").authenticated()
+                .route("hire.v1").hasRole(ADMIN)
+                .route("fire.v1").hasRole(ADMIN)
+                .route("info.v1").hasAnyRole(USER, ADMIN)
+                .route("list.v1").hasAnyRole(USER, ADMIN)
                 .anyRequest().authenticated()
                 .anyExchange().permitAll()
         );

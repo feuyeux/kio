@@ -24,7 +24,7 @@ public class HelloApi {
     @Autowired
     private HelloService helloService;
 
-    @MessageMapping("signin")
+    @MessageMapping("signin.v1")
     Mono<HelloToken> signin(HelloUser helloUser) {
         String principal = helloUser.getUserId();
         String credential = helloUser.getPassword();
@@ -36,36 +36,36 @@ public class HelloApi {
         return Mono.empty();
     }
 
-    @MessageMapping("refresh")
+    @MessageMapping("refresh.v1")
     Mono<HelloToken> refresh(String token) {
         Mono<HelloUser> mono = helloJwtService.authenticate(token);
         return mono.map(u -> helloJwtService.signToken(u));
     }
 
-    @MessageMapping("signout")
-    public Mono<Void> signout() {
+    @MessageMapping("signout.v1")
+    public Mono<Void> signout(/*@Headers Map<String, Object> headers*/) {
         helloJwtService.revokeAccessToken();
         return Mono.empty();
     }
 
-    @MessageMapping("hire")
+    @MessageMapping("hire.v1")
     Mono<HelloResponse> hire(HelloRequest helloRequest) {
         return Mono.just(helloService.hire(helloRequest));
     }
 
-    @MessageMapping("fire")
+    @MessageMapping("fire.v1")
     Mono<HelloResponse> fire(HelloRequest helloRequest) {
         return Mono.just(helloService.fire(helloRequest));
     }
 
-    @MessageMapping("info")
+    @MessageMapping("info.v1")
     Mono<HelloResponse> info(long id) {
         HelloResponse data = helloService.info(id);
         log.info("info result={}", data);
         return Mono.just(data);
     }
 
-    @MessageMapping("list")
+    @MessageMapping("list.v1")
     Flux<HelloResponse> list() {
         return helloService.list();
     }

@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.feuyeux.kio.pojo.secure.HelloToken;
 import org.feuyeux.kio.pojo.secure.HelloUser;
 import org.feuyeux.kio.pojo.secure.UserToken;
+import org.feuyeux.kio.repository.identitiy.HelloUserRepository;
+import org.feuyeux.kio.repository.token.HelloTokenRepository;
 import org.feuyeux.kio.secure.TokenUtils;
-import org.feuyeux.kio.secure.db.HelloTokenRepository;
-import org.feuyeux.kio.secure.db.HelloUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.stereotype.Service;
@@ -42,9 +42,17 @@ public class HelloJwtService {
         log.info("authenticate refreshToken: {}", refreshToken);
         ReactiveJwtDecoder reactiveJwtDecoder = TokenUtils.getRefreshTokenDecoder();
         return reactiveJwtDecoder.decode(refreshToken).map(jwt -> {
-            HelloUser user = HelloUser.builder().userId(jwt.getSubject()).role(jwt.getClaim("scope")).build();
-            log.info("verify successfully. user:{}", user);
-            return user;
+            try {
+                HelloUser user = HelloUser.builder().userId(jwt.getSubject()).role(jwt.getClaim("scope")).build();
+                log.info("verify successfully. user:{}", user);
+                HelloUser auth = tokenRepository.getAuthFromRefreshToken(jwt.getId());
+                if (user.equals(auth)) {
+                    return user;
+                }
+            } catch (Exception e) {
+                log.error("", e);
+            }
+            return new HelloUser();
         });
     }
 
