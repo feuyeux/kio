@@ -3,38 +3,69 @@ package requester
 import (
 	"context"
 	"github.com/feuyeux/kio-requester/src/common"
-	"github.com/rsocket/rsocket-go"
-	"github.com/rsocket/rsocket-go/payload"
+	"github.com/jjeffcaii/rsocket-messaging-go"
+	"github.com/jjeffcaii/rsocket-messaging-go/spi"
 	"log"
 )
 
-var client rsocket.Client
+var requester spi.Requester
 
-func buildClient() rsocket.Client {
-	if client == nil {
-		client, _ = BuildClient()
+func init() {
+	r, err := messaging.Builder().
+		ConnectTCP("127.0.0.1", 7878).
+		Build(context.Background())
+	if err != nil {
+		panic(err)
 	}
-	return client
+	requester = r
 }
 
-func SignIn(principal, credential string) {
-	client := buildClient()
-	defer client.Close()
+func SignIn(principal, credential string) (string, string) {
 	request := &common.HelloUser{UserId: principal, Password: credential}
-	json, _ := common.ToJson(request)
-	p := payload.New(json, nil)
-	result, err := client.RequestResponse(p).Block(context.Background())
+	helloToken := common.HelloToken{}
+	err := requester.
+		Route("signin.v1").
+		Data(request).
+		RetrieveMono().
+		BlockTo(context.Background(), &helloToken)
+	if err != nil {
+		log.Println("SignIn Error", err)
+	}
+	log.Printf("SignIn << [Request-Response]\r\naccess_token:%s\r\nrefresh_token:%s", helloToken.AccessToken, helloToken.RefreshToken)
+	return helloToken.AccessToken, helloToken.RefreshToken
+}
+
+func Hire(helloRequest *common.HelloRequest, token string) *common.HelloResponse {
+	helloResponse := common.HelloResponse{}
+	err := requester.
+		Route("hire.v1").
+		Metadata(token, "message/x.rsocket.authentication.bearer.v0").
+		Data(helloRequest).
+		RetrieveMono().
+		BlockTo(context.Background(), &helloResponse)
+	if err != nil {
+		log.Println("Hire Error", err)
+	}
+	log.Printf("Hire << [Request-Response] HelloResponse:%s", helloResponse)
+	return &helloResponse
+}
+
+func Refresh(token string) (string, string) {
+	log.Println("Refresh >> refresh_token:", token)
+	helloToken := common.HelloToken{}
+	err := requester.
+		Route("refresh.v1").
+		Data(token).
+		RetrieveMono().
+		BlockTo(context.Background(), &helloToken)
 	if err != nil {
 		log.Println(err)
 	}
-	data := result.Data()
-	var helloToken common.HelloToken
-	common.FromJson(data, &helloToken)
-	log.Println("<< [Request-Response] access_token:", helloToken.AccessToken, ", refresh_token:", helloToken.RefreshToken)
+	log.Printf("Refresh << [Request-Response]\r\naccess_token:%s\r\nrefresh_token:%s", helloToken.AccessToken, helloToken.RefreshToken)
+	return helloToken.AccessToken, helloToken.RefreshToken
 }
-func Refresh(token string)                  {}
+
 func SignOut()                              {}
 func Info(id int64)                         {}
-func Hire(helloRequest common.HelloRequest) {}
 func Fire(helloRequest common.HelloRequest) {}
 func List()                                 {}
