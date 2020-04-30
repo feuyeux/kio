@@ -38,7 +38,9 @@ public class HelloApi {
 
     @MessageMapping("refresh.v1")
     Mono<HelloToken> refresh(String token) {
-        Mono<HelloUser> mono = helloJwtService.authenticate(token);
+        String refreshToken = token.replace("\"", "");
+        log.info("authenticate refreshToken: {}", refreshToken);
+        Mono<HelloUser> mono = helloJwtService.authenticate(refreshToken);
         return mono.map(u -> helloJwtService.signToken(u));
     }
 

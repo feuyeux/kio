@@ -39,7 +39,6 @@ public class HelloJwtService {
     }
 
     public Mono<HelloUser> authenticate(String refreshToken) {
-        log.info("authenticate refreshToken: {}", refreshToken);
         ReactiveJwtDecoder reactiveJwtDecoder = TokenUtils.getRefreshTokenDecoder();
         return reactiveJwtDecoder.decode(refreshToken).map(jwt -> {
             try {
