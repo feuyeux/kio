@@ -12,4 +12,5 @@ func main() {
 	_, rt := requester.SignIn("9527", "KauNgJikCeo")
 	at, _ := requester.Refresh(rt)
 	requester.Hire(&common.HelloRequest{Id: "17", Value: "降龍羅漢"}, at)
+	requester.Fire(&common.HelloRequest{Id: "17", Value: "降龍羅漢"}, at)
 }

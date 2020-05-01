@@ -49,6 +49,20 @@ func Hire(helloRequest *common.HelloRequest, token string) *common.HelloResponse
 	log.Printf("Hire << [Request-Response] HelloResponse:%s", helloResponse)
 	return &helloResponse
 }
+func Fire(helloRequest *common.HelloRequest, token string) *common.HelloResponse {
+	helloResponse := common.HelloResponse{}
+	err := requester.
+		Route("fire.v1").
+		Metadata(token, "message/x.rsocket.authentication.bearer.v0").
+		Data(helloRequest).
+		RetrieveMono().
+		BlockTo(context.Background(), &helloResponse)
+	if err != nil {
+		log.Println("Fire Error", err)
+	}
+	log.Printf("Fire << [Request-Response] HelloResponse:%s", helloResponse)
+	return &helloResponse
+}
 
 func Refresh(token string) (string, string) {
 	log.Println("Refresh >> refresh_token:", token)
@@ -65,7 +79,7 @@ func Refresh(token string) (string, string) {
 	return helloToken.AccessToken, helloToken.RefreshToken
 }
 
-func SignOut()                              {}
-func Info(id int64)                         {}
-func Fire(helloRequest common.HelloRequest) {}
-func List()                                 {}
+func SignOut()      {}
+func Info(id int64) {}
+
+func List() {}
