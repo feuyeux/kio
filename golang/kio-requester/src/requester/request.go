@@ -30,8 +30,9 @@ func SignIn(principal, credential string) (string, string) {
 		BlockTo(context.Background(), &helloToken)
 	if err != nil {
 		log.Println("SignIn Error", err)
+	} else {
+		log.Printf("SignIn << [Request-Response]\r\naccess_token:%s\r\nrefresh_token:%s", helloToken.AccessToken, helloToken.RefreshToken)
 	}
-	log.Printf("SignIn << [Request-Response]\r\naccess_token:%s\r\nrefresh_token:%s", helloToken.AccessToken, helloToken.RefreshToken)
 	return helloToken.AccessToken, helloToken.RefreshToken
 }
 
@@ -45,10 +46,39 @@ func Hire(helloRequest *common.HelloRequest, token string) *common.HelloResponse
 		BlockTo(context.Background(), &helloResponse)
 	if err != nil {
 		log.Println("Hire Error", err)
+	} else {
+		log.Printf("Hire << [Request-Response] HelloResponse[%d %s]", helloResponse.Id, helloResponse.Value)
 	}
-	log.Printf("Hire << [Request-Response] HelloResponse:%s", helloResponse)
 	return &helloResponse
 }
+
+func Info(id int64, token string) *common.HelloResponse {
+	helloResponse := common.HelloResponse{}
+	err := requester.
+		Route("info.v1").
+		Metadata(token, "message/x.rsocket.authentication.bearer.v0").
+		Data(id).
+		RetrieveMono().
+		BlockTo(context.Background(), &helloResponse)
+	if err != nil {
+		log.Println("Hire Error", err)
+	} else {
+		log.Printf("Info << [Request-Response] HelloResponse[%d %s]", helloResponse.Id, helloResponse.Value)
+	}
+	return &helloResponse
+}
+
+func List(token string) []common.HelloResponse {
+	responses := make([] common.HelloResponse, 0)
+	err := requester.Route("list.v1").
+		Metadata(token, "message/x.rsocket.authentication.bearer.v0").
+		RetrieveFlux().BlockToSlice(context.Background(), &responses)
+	if err != nil {
+		log.Println("Hire Error", err)
+	}
+	return responses
+}
+
 func Fire(helloRequest *common.HelloRequest, token string) *common.HelloResponse {
 	helloResponse := common.HelloResponse{}
 	err := requester.
@@ -59,8 +89,9 @@ func Fire(helloRequest *common.HelloRequest, token string) *common.HelloResponse
 		BlockTo(context.Background(), &helloResponse)
 	if err != nil {
 		log.Println("Fire Error", err)
+	} else {
+		log.Printf("Filre << [Request-Response] HelloResponse[%d %s]", helloResponse.Id, helloResponse.Value)
 	}
-	log.Printf("Fire << [Request-Response] HelloResponse:%s", helloResponse)
 	return &helloResponse
 }
 
@@ -74,12 +105,15 @@ func Refresh(token string) (string, string) {
 		BlockTo(context.Background(), &helloToken)
 	if err != nil {
 		log.Println(err)
+	} else {
+		log.Printf("Refresh << [Request-Response]\r\naccess_token:%s\r\nrefresh_token:%s", helloToken.AccessToken, helloToken.RefreshToken)
 	}
-	log.Printf("Refresh << [Request-Response]\r\naccess_token:%s\r\nrefresh_token:%s", helloToken.AccessToken, helloToken.RefreshToken)
 	return helloToken.AccessToken, helloToken.RefreshToken
 }
 
-func SignOut()      {}
-func Info(id int64) {}
-
-func List() {}
+func SignOut(token string) {
+	_ = requester.
+		Route("signout.v1").
+		Metadata(token, "message/x.rsocket.authentication.bearer.v0").
+		Retrieve()
+}

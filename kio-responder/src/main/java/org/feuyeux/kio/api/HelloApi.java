@@ -52,16 +52,19 @@ public class HelloApi {
 
     @MessageMapping("hire.v1")
     Mono<HelloResponse> hire(HelloRequest helloRequest) {
+        log.info("[hire] helloRequest:{}", helloRequest);
         return Mono.just(helloService.hire(helloRequest));
     }
 
     @MessageMapping("fire.v1")
     Mono<HelloResponse> fire(HelloRequest helloRequest) {
+        log.info("[fire] helloRequest:{}", helloRequest);
         return Mono.just(helloService.fire(helloRequest));
     }
 
     @MessageMapping("info.v1")
     Mono<HelloResponse> info(long id) {
+        log.info("[info] id:{}", id);
         HelloResponse data = helloService.info(id);
         log.info("info result={}", data);
         return Mono.just(data);

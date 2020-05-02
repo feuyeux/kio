@@ -5,11 +5,11 @@ import (
 )
 
 type HelloRequest struct {
-	Id    string `json:"id"`
+	Id    int64  `json:"id"`
 	Value string `json:"value"`
 }
 type HelloResponse struct {
-	Id    string `json:"id"`
+	Id    int64  `json:"id"`
 	Value string `json:"value"`
 }
 type HelloToken struct {
