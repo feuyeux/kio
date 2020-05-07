@@ -3,7 +3,7 @@ alias s := run-responder
 alias q := run-requester
 
 build:
-    cd {{invocation_directory()}}; mvn clean package -DskipTests -U
+    cd {{invocation_directory()}}; mvn clean install -DskipTests -U
 
 run-responder:
     cd {{invocation_directory()}}/kio-responder; mvn spring-boot:run
