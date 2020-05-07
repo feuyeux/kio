@@ -27,6 +27,7 @@ public class HelloJwtService {
     private String tokenId;
 
     public HelloUser authenticate(String principal, String credential) {
+        log.info("principal={},credential={}", principal, credential);
         try {
             HelloUser user = userRepository.retrieve(principal);
             if (user.getPassword().equals(credential)) {

@@ -13,11 +13,11 @@ type HelloResponse struct {
 	Value string `json:"value"`
 }
 type HelloToken struct {
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 type HelloUser struct {
-	UserId   string `json:"userId"`
+	UserId   string `json:"user_id"`
 	Password string `json:"password"`
 	Role     string `json:"role"`
 }

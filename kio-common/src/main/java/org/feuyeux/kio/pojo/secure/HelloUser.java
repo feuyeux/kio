@@ -1,5 +1,6 @@
 package org.feuyeux.kio.pojo.secure;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 /**
@@ -11,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class HelloUser {
+    @JsonProperty("user_id")
     private String userId;
     @EqualsAndHashCode.Exclude
     private String password;
