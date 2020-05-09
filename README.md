@@ -58,9 +58,11 @@ kio is a secure io demonstration, for Token-based RSocket Communication.
 
 #### requester [golang]
 - `bash run_go_requester.sh`
-- `just go`
+- `just gq`
 
 #### requester [rust]
+- `bash run-rust-requester.sh`
+- `just rq`
 
 ### Testing
 ```bash

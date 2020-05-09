@@ -1,7 +1,8 @@
 alias b := build
 alias s := run-responder
 alias q := run-requester
-alias go := run-golang-requester
+alias gq := run-golang-requester
+alias gq := run-rust-requester
 
 build:
     cd {{invocation_directory()}}; mvn clean install -DskipTests -U
@@ -13,7 +14,10 @@ run-requester:
     cd {{invocation_directory()}}/kio-requester; mvn spring-boot:run
 
 run-golang-requester:
-    cd {{invocation_directory()}}/golang/kio-requester; ./kio-requester
+    cd {{invocation_directory()}}/golang/kio-requester; ./kio
+
+run-rust-requester:
+    cd {{invocation_directory()}}/golang/kio-requester; target/release/kio
 
 test:
     bash {{invocation_directory()}}/test_kio.sh
