@@ -6,6 +6,7 @@ edition = "2018"
 license = "Apache-2.0"
 
 [dependencies]
+#v0.5.2
 rsocket_rust =  { git = "https://github.com/rsocket/rsocket-rust", branch = "feature/messaging" }
 rsocket_rust_transport_tcp = { git = "https://github.com/rsocket/rsocket-rust", branch = "feature/messaging" }
 rsocket_rust_messaging = { git = "https://github.com/rsocket/rsocket-rust", branch = "feature/messaging" }

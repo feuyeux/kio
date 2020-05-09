@@ -1,4 +1,4 @@
-module github.com/feuyeux/kio-requester
+module github.com/feuyeux/kio
 
 go 1.14
 
