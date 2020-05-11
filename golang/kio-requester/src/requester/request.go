@@ -2,13 +2,15 @@ package requester
 
 import (
 	"context"
-	"github.com/feuyeux/kio/src/common"
-	"github.com/jjeffcaii/rsocket-messaging-go"
-	"github.com/jjeffcaii/rsocket-messaging-go/spi"
 	"log"
+
+	"github.com/feuyeux/kio/src/common"
+	messaging "github.com/jjeffcaii/rsocket-messaging-go"
+	"github.com/jjeffcaii/rsocket-messaging-go/spi"
 )
 
 var requester spi.Requester
+
 const mineType = "message/x.rsocket.authentication.bearer.v0"
 
 func init() {
@@ -70,7 +72,7 @@ func Info(id int64, token string) *common.HelloResponse {
 }
 
 func List(token string) []common.HelloResponse {
-	responses := make([] common.HelloResponse, 0)
+	responses := make([]common.HelloResponse, 0)
 	err := requester.Route("list.v1").
 		Metadata(token, mineType).
 		RetrieveFlux().BlockToSlice(context.Background(), &responses)

@@ -2,6 +2,7 @@ use rsocket_rust::prelude::RSocketFactory;
 use rsocket_rust_messaging::*;
 use rsocket_rust_transport_tcp::TcpClientTransport;
 use kio::common::*;
+use kio::requester::*;
 use tokio::runtime::Runtime;
 
 fn main() {
@@ -17,18 +18,9 @@ async fn run_request() {
         .start()
         .await
         .expect("Connect failed!");
-    let requester = Requester::from(socket);
+    let req = Requester::from(socket);
 
     let admin = HelloUser { user_id: "9527".to_owned(), password: "KauNgJikCeo".to_owned(), role: "".to_owned() };
 
-    let mut req = requester.route("signin.v1");
-    req.data(&admin).unwrap();
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("Retrieve failed!")
-        .expect("Empty result!");
-
-    println!("------> RESPONSE: {:?}", res);
+    sign_in(req, &admin).await;
 }

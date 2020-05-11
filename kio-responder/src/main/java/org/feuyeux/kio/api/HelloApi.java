@@ -26,6 +26,7 @@ public class HelloApi {
 
     @MessageMapping("signin.v1")
     Mono<HelloToken> signin(HelloUser helloUser) {
+        log.info("signin input: {}", helloUser);
         String principal = helloUser.getUserId();
         String credential = helloUser.getPassword();
         HelloUser user = helloJwtService.authenticate(principal, credential);
