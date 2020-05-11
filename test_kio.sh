@@ -40,7 +40,7 @@ echo -e "\\n"
 
 test_user() {
 echo "signin as user"
-read accessToken refreshToken < <(echo $(curl -s "http://localhost:8989/api/signin?u=0000&p=Zero4" | jq -r '.accessToken,.refreshToken'))
+read accessToken refreshToken < <(echo $(curl -s "http://localhost:8989/api/signin?u=0000&p=Zero4" | jq -r '.access_token,.refresh_token'))
 echo "Access Token  :${accessToken}"
 echo -e "Refresh Token :${refreshToken}\\n"
 

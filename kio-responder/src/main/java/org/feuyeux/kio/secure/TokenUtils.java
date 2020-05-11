@@ -21,7 +21,9 @@ import java.util.UUID;
  */
 @Slf4j
 public class TokenUtils {
+    // access token timeout
     public static final long ACCESS_EXPIRE = 5;
+    // refresh token timeout
     public static final long REFRESH_EXPIRE = 7;
 
     /*
