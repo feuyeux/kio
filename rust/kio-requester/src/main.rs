@@ -22,5 +22,11 @@ async fn run_request() {
 
     let admin = HelloUser { user_id: "9527".to_owned(), password: "KauNgJikCeo".to_owned(), role: "".to_owned() };
 
-    sign_in(req, &admin).await;
+    let tokens = sign_in(&req, &admin).await;
+    let hello = HelloRequest { id: 17, value: "降龍羅漢".to_owned() };
+
+    // unsupported message/x.rsocket.composite-metadata.v0 from metadata
+    hire(&req, &tokens.access_token, &hello).await;
+    // no api to handle the result from stream
+    list(&req, &tokens.access_token).await;
 }
