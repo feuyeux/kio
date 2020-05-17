@@ -71,17 +71,6 @@ func Info(id int64, token string) *common.HelloResponse {
 	return &helloResponse
 }
 
-func List(token string) []common.HelloResponse {
-	responses := make([]common.HelloResponse, 0)
-	err := requester.Route("list.v1").
-		Metadata(token, mineType).
-		RetrieveFlux().BlockToSlice(context.Background(), &responses)
-	if err != nil {
-		log.Println("Hire Error", err)
-	}
-	return responses
-}
-
 func Fire(helloRequest *common.HelloRequest, token string) *common.HelloResponse {
 	helloResponse := common.HelloResponse{}
 	err := requester.
@@ -112,6 +101,17 @@ func Refresh(token string) (string, string) {
 		log.Printf("Refresh << [Request-Response]\r\naccess_token:%s\r\nrefresh_token:%s", helloToken.AccessToken, helloToken.RefreshToken)
 	}
 	return helloToken.AccessToken, helloToken.RefreshToken
+}
+
+func List(token string) []common.HelloResponse {
+	responses := make([]common.HelloResponse, 0)
+	err := requester.Route("list.v1").
+		Metadata(token, mineType).
+		RetrieveFlux().BlockToSlice(context.Background(), &responses)
+	if err != nil {
+		log.Println("Hire Error", err)
+	}
+	return responses
 }
 
 func SignOut(token string) {
