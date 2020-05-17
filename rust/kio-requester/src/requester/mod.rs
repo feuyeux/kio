@@ -21,7 +21,7 @@ pub async fn sign_in(req: &Requester<Client<DefaultSpawner>>, admin: &HelloUser)
 
 pub async fn hire(req: &Requester<Client<DefaultSpawner>>, token: &String, request: &HelloRequest) {
     let mut req = req.route("hire.v1");
-    req.metadata(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
+    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
     req.data(request).unwrap();
     let res: HelloToken = req
         .retrieve_mono()
@@ -34,7 +34,7 @@ pub async fn hire(req: &Requester<Client<DefaultSpawner>>, token: &String, reque
 
 pub async fn info(req: &Requester<Client<DefaultSpawner>>, token: &String, request: &String) {
     let mut req = req.route("info.v1");
-    req.metadata(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
+    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
     req.data(request).unwrap();
     let res: HelloToken = req
         .retrieve_mono()
@@ -47,7 +47,7 @@ pub async fn info(req: &Requester<Client<DefaultSpawner>>, token: &String, reque
 
 pub async fn list(req: &Requester<Client<DefaultSpawner>>, token: &String) {
     let mut req = req.route("list.v1");
-    req.metadata(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
+    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
     let res: HelloToken = req
         .retrieve_mono()
         .await
@@ -59,7 +59,7 @@ pub async fn list(req: &Requester<Client<DefaultSpawner>>, token: &String) {
 
 pub async fn fire(req: &Requester<Client<DefaultSpawner>>, token: &String, request: &String) {
     let mut req = req.route("fire.v1");
-    req.metadata(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
+    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
     req.data(request).unwrap();
     let res: HelloToken = req
         .retrieve_mono()
@@ -84,7 +84,8 @@ pub async fn refresh(req: &Requester<Client<DefaultSpawner>>, token: &String) {
 
 pub async fn sign_out(req: &Requester<Client<DefaultSpawner>>, token: &String) {
     let mut req = req.route("signout.v1");
-    req.metadata(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
+    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
+        .unwrap();
     let res: HelloToken = req
         .retrieve_mono()
         .await
