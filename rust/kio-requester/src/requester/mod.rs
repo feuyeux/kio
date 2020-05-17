@@ -1,96 +1,101 @@
 use rsocket_rust_messaging::Requester;
-use rsocket_rust::prelude::Client;
-use rsocket_rust::runtime::DefaultSpawner;
-use crate::common::{HelloUser, HelloToken, HelloRequest};
+use crate::common::{HelloUser, HelloToken, HelloRequest, HelloResponse};
 
 //const mineType := "message/x.rsocket.authentication.bearer.v0";
 
-pub async fn sign_in(req: &Requester<Client<DefaultSpawner>>, admin: &HelloUser) -> HelloToken {
-    let mut req = req.route("signin.v1");
-    req.data(&admin).unwrap();
-    //Result<Option<T>, Box<dyn Error>>
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("SignIn Error")
-        .expect("Tokens is not existed");
-    println!("SignIn << [Request-Response]: {:#?}", res);
-    return res;
+pub struct RequestCoon {
+    pub requester: Requester
 }
 
-pub async fn hire(req: &Requester<Client<DefaultSpawner>>, token: &String, request: &HelloRequest) {
-    let mut req = req.route("hire.v1");
-    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
-    req.data(request).unwrap();
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("Hire Error")
-        .expect("No result returns");
-    println!("Hire << [Request-Response]: {:#?}", res);
-}
+impl RequestCoon {
+    pub async fn new() -> RequestCoon {
+        RequestCoon {
+            requester: Requester::builder()
+                .connect_tcp("127.0.0.1", 7878)
+                .build()
+                .await
+                .expect("Connect failed!")
+        }
+    }
 
-pub async fn info(req: &Requester<Client<DefaultSpawner>>, token: &String, request: &String) {
-    let mut req = req.route("info.v1");
-    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
-    req.data(request).unwrap();
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("Hire Error")
-        .expect("No result returns");
-    println!("Hire << [Request-Response]: {:#?}", res);
-}
+    pub async fn sign_in(&self, admin: HelloUser) -> HelloToken {
+        let res = self.requester.route("signin.v1")
+            .data(admin)
+            .retrieve_mono()
+            .await
+            .block()
+            .expect("SignIn Error")
+            .expect("Tokens is not existed");
+        println!("SignIn << [Request-Response]: {:#?}", res);
+        return res;
+    }
 
-pub async fn list(req: &Requester<Client<DefaultSpawner>>, token: &String) {
-    let mut req = req.route("list.v1");
-    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("Hire Error")
-        .expect("No result returns");
-    println!("Hire << [Request-Response]: {:#?}", res);
-}
+    pub async fn refresh(&self, token: String) -> HelloToken {
+        let res = self.requester.route("refresh.v1")
+            .data(token)
+            .retrieve_mono()
+            .await
+            .block()
+            .expect("Hire Error")
+            .expect("No result returns");
+        println!("ReFresh << [Request-Response]: {:#?}", res);
+        return res;
+    }
 
-pub async fn fire(req: &Requester<Client<DefaultSpawner>>, token: &String, request: &String) {
-    let mut req = req.route("fire.v1");
-    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0").unwrap();
-    req.data(request).unwrap();
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("Hire Error")
-        .expect("No result returns");
-    println!("Hire << [Request-Response]: {:#?}", res);
-}
+    pub async fn hire(&self, token: String, request: HelloRequest) -> HelloResponse {
+        let res = self.requester.route("hire.v1")
+            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
+            .data(request)
+            .retrieve_mono()
+            .await
+            .block()
+            .expect("Hire Error")
+            .expect("No result returns");
+        println!("Hire << [Request-Response]: {:#?}", res);
+        return res;
+    }
 
-pub async fn refresh(req: &Requester<Client<DefaultSpawner>>, token: &String) {
-    let mut req = req.route("refresh.v1");
-    req.data(token).unwrap();
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("Hire Error")
-        .expect("No result returns");
-    println!("Hire << [Request-Response]: {:#?}", res);
-}
+    pub async fn info(&self, token: String, request: String) -> HelloResponse {
+        let res = self.requester.route("info.v1")
+            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
+            .data(request)
+            .retrieve_mono()
+            .await
+            .block()
+            .expect("Hire Error")
+            .expect("No result returns");
+        println!("Info << [Request-Response]: {:#?}", res);
+        return res;
+    }
 
-pub async fn sign_out(req: &Requester<Client<DefaultSpawner>>, token: &String) {
-    let mut req = req.route("signout.v1");
-    req.metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
-        .unwrap();
-    let res: HelloToken = req
-        .retrieve_mono()
-        .await
-        .block()
-        .expect("SignOut Error")
-        .expect("No result returns");
-    println!("Hire << [Request-Response]: {:#?}", res);
+    pub async fn fire(&self, token: String, request: HelloRequest) -> HelloResponse {
+        let res = self.requester.route("fire.v1")
+            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
+            .data(request)
+            .retrieve_mono()
+            .await
+            .block()
+            .expect("Hire Error")
+            .expect("No result returns");
+        println!("Fire << [Request-Response]: {:#?}", res);
+        return res;
+    }
+
+    /*pub async fn list(&self, token: String) {
+        let res = self.requester.route("list.v1")
+            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
+            .retrieve_flux()
+            .await
+            .block()
+            .expect("Hire Error")
+            .expect("No result returns");
+        println!("List << [Request-Stream]: {:#?}", res);
+    }
+
+    pub async fn sign_out(&self, token: String) {
+        let result = self.requester.route("signout.v1")
+            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
+            .await.block();
+        println!("SignOut << [Fire-and-Forget]: {:#?}", result);
+    }*/
 }

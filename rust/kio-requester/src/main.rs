@@ -1,6 +1,3 @@
-use rsocket_rust::prelude::RSocketFactory;
-use rsocket_rust_messaging::*;
-use rsocket_rust_transport_tcp::TcpClientTransport;
 use kio::common::*;
 use kio::requester::*;
 use tokio::runtime::Runtime;
@@ -11,22 +8,18 @@ fn main() {
 }
 
 async fn run_request() {
-    let socket = RSocketFactory::connect()
-        .transport(TcpClientTransport::from("tcp://127.0.0.1:7878"))
-        .data_mime_type("application/json")
-        .metadata_mime_type("message/x.rsocket.composite-metadata.v0")
-        .start()
-        .await
-        .expect("Connect failed!");
-    let req = Requester::from(socket);
-
+    let request_coon = RequestCoon::new().await;
     let admin = HelloUser { user_id: "9527".to_owned(), password: "KauNgJikCeo".to_owned(), role: "".to_owned() };
+    let tokens = request_coon.sign_in(admin).await;
 
-    let tokens = sign_in(&req, &admin).await;
     let hello = HelloRequest { id: 17, value: "降龍羅漢".to_owned() };
+    request_coon.hire(tokens.access_token.clone(), hello).await;
 
-    // unsupported message/x.rsocket.composite-metadata.v0 from metadata
-    hire(&req, &tokens.access_token, &hello).await;
+    request_coon.info(tokens.access_token.clone(), "10".to_owned()).await;
+
+    let hello = HelloRequest { id: 17, value: "降龍羅漢".to_owned() };
+    request_coon.fire(tokens.access_token.clone(), hello).await;
+
     // no api to handle the result from stream
-    list(&req, &tokens.access_token).await;
+    //list(&req, &tokens.access_token).await;
 }
