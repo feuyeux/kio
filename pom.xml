@@ -15,13 +15,13 @@
     </modules>
 
     <properties>
-        <spring-boot.version>2.3.0.M4</spring-boot.version>
+        <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <spring.version>5.2.5.RELEASE</spring.version>
         <spring-security.version>5.3.1.RELEASE</spring-security.version>
-        <rsocket.version>1.0.0-RC6</rsocket.version>
-        <reactor-netty.version>0.9.5.RELEASE</reactor-netty.version>
+        <rsocket.version>1.0.0</rsocket.version>
+        <reactor-netty.version>0.9.7.RELEASE</reactor-netty.version>
         <netty.version>4.1.45.Final</netty.version>
-        <reactor-core.version>3.3.3.RELEASE</reactor-core.version>
+        <reactor-core.version>3.3.4.RELEASE</reactor-core.version>
         <fastjson.version>1.2.68</fastjson.version>
         <jjwt.version>0.9.1</jjwt.version>
     </properties>
