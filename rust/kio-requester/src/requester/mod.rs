@@ -13,7 +13,6 @@ pub async fn sign_in(req: &Requester, admin: HelloUser) -> HelloToken {
         .expect("SignIn Error")
         .expect("Tokens is not existed");
     info!("SignIn << [Request-Response]: {:#?}", res);
-    println!("SignIn << [Request-Response]: {:#?}", res);
     return res;
 }
 
@@ -29,21 +28,19 @@ pub async fn hire(req: &Requester, token: &str, request: HelloRequest) {
         .expect("Hire Error")
         .expect("No result returns");
     info!("Hire << [Request-Response]: {:#?}", res);
-    println!("Hire << [Request-Response]: {:#?}", res);
 }
 
-pub async fn info(req: &Requester, token: &str, request: String) {
+pub async fn info(req: &Requester, token: &str, id: i64) {
     let res: HelloResponse = req
         .route("info.v1")
         .metadata_raw(token, MIME_AUTH)
-        .data(request)
+        .data(id)
         .retrieve_mono()
         .await
         .block()
         .expect("Info Error")
         .expect("No result returns");
     info!("Info << [Request-Response]: {:#?}", res);
-    println!("Info << [Request-Response]: {:#?}", res);
 }
 
 pub async fn list(req: &Requester, token: &str) {
@@ -55,7 +52,6 @@ pub async fn list(req: &Requester, token: &str) {
         .await
         .expect("List Error");
     info!("List << [Request-Response]: {:#?}", res);
-    println!("List << [Request-Response]: {:#?}", res);
 }
 
 pub async fn fire(req: &Requester, token: &str, request: HelloRequest) {
@@ -69,7 +65,6 @@ pub async fn fire(req: &Requester, token: &str, request: HelloRequest) {
         .expect("Fire Error")
         .expect("No result returns");
     info!("Fire << [Request-Response]: {:#?}", res);
-    println!("Fire << [Request-Response]: {:#?}", res);
 }
 
 pub async fn refresh(req: &Requester, token: &str) {
@@ -82,14 +77,13 @@ pub async fn refresh(req: &Requester, token: &str) {
         .expect("Refresh failed!")
         .expect("No result returns");
     info!("Refresh << [Request-Response]: {:#?}", res);
-    println!("Refresh << [Request-Response]: {:#?}", res);
 }
 
 pub async fn sign_out(req: &Requester, token: &str) {
-    /*let res: HelloToken = req
-        .route("signout.v1")
+    req.route("signout.v1")
         .metadata_raw(token, MIME_AUTH)
-        .await;
-    info!("SignOut << [Request-Response]: {:#?}", res);
-    println!("SignOut << [Request-Response]: {:#?}", res);*/
+        .retrieve()
+        .await
+        .expect("SignOut failed!");
+    info!("SignOut << [Fire-And-Forget]");
 }
