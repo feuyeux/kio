@@ -21,7 +21,7 @@
         <rsocket.version>1.0.0-RELEASE</rsocket.version>
         <reactor-netty.version>0.9.7.RELEASE</reactor-netty.version>
         <netty.version>4.1.50.Final</netty.version>
-        <reactor-core.version>3.3.3.RELEASE</reactor-core.version>
+        <reactor-core.version>3.3.4.RELEASE</reactor-core.version>
         <fastjson.version>1.2.68</fastjson.version>
         <jjwt.version>0.9.1</jjwt.version>
     </properties>

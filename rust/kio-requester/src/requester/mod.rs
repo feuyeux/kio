@@ -1,101 +1,92 @@
+use crate::common::{HelloRequest, HelloResponse, HelloToken, HelloUser};
 use rsocket_rust_messaging::Requester;
-use crate::common::{HelloUser, HelloToken, HelloRequest, HelloResponse};
 
-//const mineType := "message/x.rsocket.authentication.bearer.v0";
+const MIME_AUTH: &str = "message/x.rsocket.authentication.bearer.v0";
 
-pub struct RequestCoon {
-    pub requester: Requester
+pub async fn sign_in(req: &Requester, admin: HelloUser) -> HelloToken {
+    let res: HelloToken = req
+        .route("signin.v1")
+        .data(admin)
+        .retrieve_mono()
+        .await
+        .block()
+        .expect("SignIn Error")
+        .expect("Tokens is not existed");
+    info!("SignIn << [Request-Response]: {:#?}", res);
+    return res;
 }
 
-impl RequestCoon {
-    pub async fn new() -> RequestCoon {
-        RequestCoon {
-            requester: Requester::builder()
-                .connect_tcp("127.0.0.1", 7878)
-                .build()
-                .await
-                .expect("Connect failed!")
-        }
-    }
+pub async fn hire(req: &Requester, token: &str, request: HelloRequest) {
+    debug!("preflight hire: token={}", token);
+    let res: HelloResponse = req
+        .route("hire.v1")
+        .metadata_raw(token, MIME_AUTH)
+        .data(request)
+        .retrieve_mono()
+        .await
+        .block()
+        .expect("Hire Error")
+        .expect("No result returns");
+    info!("Hire << [Request-Response]: {:#?}", res)
+}
 
-    pub async fn sign_in(&self, admin: HelloUser) -> HelloToken {
-        let res = self.requester.route("signin.v1")
-            .data(admin)
-            .retrieve_mono()
-            .await
-            .block()
-            .expect("SignIn Error")
-            .expect("Tokens is not existed");
-        println!("SignIn << [Request-Response]: {:#?}", res);
-        return res;
-    }
+pub async fn info(req: &Requester, token: &str, request: String) {
+    let res: HelloResponse = req
+        .route("info.v1")
+        .metadata_raw(token, MIME_AUTH)
+        .data(request)
+        .retrieve_mono()
+        .await
+        .block()
+        .expect("Info Error")
+        .expect("No result returns");
+    info!("Info << [Request-Response]: {:#?}", res);
+}
 
-    pub async fn refresh(&self, token: String) -> HelloToken {
-        let res = self.requester.route("refresh.v1")
-            .data(token)
-            .retrieve_mono()
-            .await
-            .block()
-            .expect("Hire Error")
-            .expect("No result returns");
-        println!("ReFresh << [Request-Response]: {:#?}", res);
-        return res;
-    }
+pub async fn list(req: &Requester, token: &str) {
+    let res: Vec<HelloResponse> = req
+        .route("list.v1")
+        .metadata_raw(token, MIME_AUTH)
+        .retrieve_flux()
+        .block()
+        .await
+        .expect("List Error");
+    info!("List << [Request-Response]: {:#?}", res);
+}
 
-    pub async fn hire(&self, token: String, request: HelloRequest) -> HelloResponse {
-        let res = self.requester.route("hire.v1")
-            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
-            .data(request)
-            .retrieve_mono()
-            .await
-            .block()
-            .expect("Hire Error")
-            .expect("No result returns");
-        println!("Hire << [Request-Response]: {:#?}", res);
-        return res;
-    }
+pub async fn fire(req: &Requester, token: &str, request: String) {
+    let res: HelloResponse = req
+        .route("fire.v1")
+        .metadata_raw(token, MIME_AUTH)
+        .data(request)
+        .retrieve_mono()
+        .await
+        .block()
+        .expect("Fire Error")
+        .expect("No result returns");
+    info!("Fire << [Request-Response]: {:#?}", res);
+}
 
-    pub async fn info(&self, token: String, request: String) -> HelloResponse {
-        let res = self.requester.route("info.v1")
-            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
-            .data(request)
-            .retrieve_mono()
-            .await
-            .block()
-            .expect("Hire Error")
-            .expect("No result returns");
-        println!("Info << [Request-Response]: {:#?}", res);
-        return res;
-    }
+pub async fn refresh(req: &Requester, token: &str) {
+    let res: HelloToken = req
+        .route("refresh.v1")
+        .data(token.to_owned())
+        .retrieve_mono()
+        .await
+        .block()
+        .expect("Refresh failed!")
+        .expect("No result returns");
+    info!("Refresh << [Request-Response]: {:#?}", res);
+}
 
-    pub async fn fire(&self, token: String, request: HelloRequest) -> HelloResponse {
-        let res = self.requester.route("fire.v1")
-            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
-            .data(request)
-            .retrieve_mono()
-            .await
-            .block()
-            .expect("Hire Error")
-            .expect("No result returns");
-        println!("Fire << [Request-Response]: {:#?}", res);
-        return res;
-    }
-
-    /*pub async fn list(&self, token: String) {
-        let res = self.requester.route("list.v1")
-            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
-            .retrieve_flux()
-            .await
-            .block()
-            .expect("Hire Error")
-            .expect("No result returns");
-        println!("List << [Request-Stream]: {:#?}", res);
-    }
-
-    pub async fn sign_out(&self, token: String) {
-        let result = self.requester.route("signout.v1")
-            .metadata_raw(token, "message/x.rsocket.authentication.bearer.v0")
-            .await.block();
-        println!("SignOut << [Fire-and-Forget]: {:#?}", result);
-    }*/
+pub async fn sign_out(req: &Requester, token: &str) {
+    let res: HelloToken = req
+        .route("signout.v1")
+        .metadata_raw(token, MIME_AUTH)
+        .retrieve_mono()
+        .await
+        .block()
+        .expect("SignOut Error")
+        .expect("No result returns");
+    info!("SignOut << [Request-Response]: {:#?}", res);
 }

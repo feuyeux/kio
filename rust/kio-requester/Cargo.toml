@@ -10,8 +10,15 @@ license = "Apache-2.0"
 rsocket_rust =  { git = "https://github.com/rsocket/rsocket-rust", branch = "feature/messaging" }
 rsocket_rust_transport_tcp = { git = "https://github.com/rsocket/rsocket-rust", branch = "feature/messaging" }
 rsocket_rust_messaging = { git = "https://github.com/rsocket/rsocket-rust", branch = "feature/messaging" }
+log = "0.4.8"
 bytes = "0.5.4"
-futures = "0.3.4"
-tokio =  "0.2.20"
-tokio-util = "0.3.1"
+futures = "0.3.5"
+tokio = { version = "0.2.21", default-features = false, features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+env_logger = "0.7.1"
+
+[[example]]
+name = "request"
+path = "src/examples/request.rs"

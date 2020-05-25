@@ -23,7 +23,7 @@ pub struct HelloToken {
 pub struct HelloUser {
     pub user_id: String,
     pub password: String,
-    pub role: String,
+    pub role: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
