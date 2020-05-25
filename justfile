@@ -3,7 +3,6 @@ alias s := run-responder
 alias q := run-requester
 alias gq := run-golang-requester
 alias rq := run-rust-requester
-alias t := test
 
 build:
     cd {{invocation_directory()}}; mvn clean install -DskipTests -U

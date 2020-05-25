@@ -33,8 +33,6 @@ public class HelloRepository {
         employeeTable.put(14L, "芭蕉羅漢");
         employeeTable.put(15L, "长眉羅漢");
         employeeTable.put(16L, "看門羅漢");
-        employeeTable.put(17L, "降龍羅漢");
-        employeeTable.put(18L, "伏虎羅漢");
     }
 
     public void store(long id, String name) {

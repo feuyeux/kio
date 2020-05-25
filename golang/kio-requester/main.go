@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/feuyeux/kio/src/common"
-	"github.com/feuyeux/kio/src/requester"
+	"github.com/feuyeux/kio-requester/src/common"
+	"github.com/feuyeux/kio-requester/src/requester"
 	"log"
 )
 
