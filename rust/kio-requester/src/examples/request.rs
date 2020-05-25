@@ -40,8 +40,16 @@ async fn main() {
         value: "降龍羅漢".to_owned(),
     };
 
-    // unsupported message/x.rsocket.composite-metadata.v0 from metadata
     hire(&req, &tokens.access_token, hello).await;
-    // no api to handle the result from stream
+    info(&req, &tokens.access_token, "1".to_owned()).await;
+
+    let hello = HelloRequest {
+        id: 17,
+        value: "降龍羅漢".to_owned(),
+    };
+    fire(&req, &tokens.access_token, hello).await;
     list(&req, &tokens.access_token).await;
+
+    sign_out(&req, &tokens.access_token).await;
+    info(&req, &tokens.access_token, "1".to_owned()).await;
 }
