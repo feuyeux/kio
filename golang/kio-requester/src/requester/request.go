@@ -119,4 +119,5 @@ func SignOut(token string) {
 		Route("signout.v1").
 		Metadata(token, mineType).
 		Retrieve()
+	log.Println("SignOut << [Fire-And-Forget]")
 }
