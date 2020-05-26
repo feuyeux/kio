@@ -1,1 +1,6 @@
-## kio-requester of golang
+## kio-requester in golang
+
+```sh
+go build
+./kio
+```

@@ -35,8 +35,8 @@ kio is a secure io demonstration, for Token-based RSocket Communication.
 ### Coding
 - [x] Java/SpringBoot
 - [x] Golang
-- [ ] Rust
-- [ ] Nodejs
+- [x] Rust
+- [ ] Node|Deno
 
 ### Building
 > choose either of them

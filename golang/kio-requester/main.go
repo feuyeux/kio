@@ -20,7 +20,6 @@ func main() {
 	for _, next := range responses {
 		log.Println(next)
 	}
-
 	requester.SignOut(at)
 	requester.Info(1, at)
 

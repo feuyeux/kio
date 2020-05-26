@@ -51,4 +51,4 @@ target/
 *.jks
 *.srl
 *.p12
-golang/kio-requester/kio-requester
+golang/kio-requester/kio
