@@ -13,7 +13,7 @@ fn init_log() {
 // Example of basic kio functionalities.
 //
 // Run as below:
-// $ cargo run --example request
+// $ RUST_LOG=info cargo run --example request
 //
 // Or if you want debug:
 // $ RUST_LOG=debug cargo run --example request
@@ -41,7 +41,7 @@ async fn main() {
     };
 
     hire(&req, &tokens.access_token, hello).await;
-    info(&req, &tokens.access_token, "1".to_owned()).await;
+    info(&req, &tokens.access_token, 1i64).await;
 
     let hello = HelloRequest {
         id: 17,
@@ -51,5 +51,7 @@ async fn main() {
     list(&req, &tokens.access_token).await;
 
     sign_out(&req, &tokens.access_token).await;
-    info(&req, &tokens.access_token, "1".to_owned()).await;
+
+    // Always failed after sign out
+    info(&req, &tokens.access_token, 1i64).await;
 }
