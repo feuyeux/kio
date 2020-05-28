@@ -46,7 +46,7 @@ impl KioRequester {
         return res;
     }
 
-    pub async fn hire(&self, token: &str, request: HelloRequest) {
+    pub async fn hire(&self, token: &str, request: HelloRequest) -> Option<HelloResponse> {
         debug!("preflight hire: token={}", token);
         let result: Result<Option<HelloResponse>, Box<dyn Error>> = self.requester
             .route("hire.v1")
@@ -56,8 +56,14 @@ impl KioRequester {
             .await
             .block();
         match result {
-            Ok(v) => info!("Hire << [Request-Response]: {:#?}", v),
-            Err(e) => error!("{}", e.to_string())
+            Ok(response) => {
+                info!("Hire << [Request-Response]: {:#?}", response);
+                response
+            }
+            Err(e) => {
+                error!("Hire << {}", e.to_string());
+                None
+            }
         }
     }
 
@@ -81,7 +87,7 @@ impl KioRequester {
         }
     }
 
-    pub async fn list(&self, token: &str) {
+    pub async fn list(&self, token: &str) -> Vec<HelloResponse>{
         let res: Vec<HelloResponse> = self.requester
             .route("list.v1")
             .metadata_raw(token, MIME_TYPE)
@@ -90,6 +96,7 @@ impl KioRequester {
             .await
             .expect("List Error");
         info!("List << [Request-Response]: {:#?}", res);
+        res
     }
 
     pub async fn fire(&self, token: &str, request: HelloRequest) {

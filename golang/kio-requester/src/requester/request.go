@@ -39,7 +39,7 @@ func SignIn(principal, credential string) (string, string) {
 	return helloToken.AccessToken, helloToken.RefreshToken
 }
 
-func Hire(helloRequest *common.HelloRequest, token string) *common.HelloResponse {
+func Hire(token string, helloRequest *common.HelloRequest) *common.HelloResponse {
 	helloResponse := common.HelloResponse{}
 	err := requester.
 		Route("hire.v1").
@@ -48,14 +48,14 @@ func Hire(helloRequest *common.HelloRequest, token string) *common.HelloResponse
 		RetrieveMono().
 		BlockTo(context.Background(), &helloResponse)
 	if err != nil {
-		log.Println("Hire Error", err)
+		log.Println("Hire << ", err)
 	} else {
 		log.Printf("Hire << [Request-Response] HelloResponse[%d %s]", helloResponse.Id, helloResponse.Value)
 	}
 	return &helloResponse
 }
 
-func Info(id int64, token string) *common.HelloResponse {
+func Info(token string, id int64) *common.HelloResponse {
 	helloResponse := common.HelloResponse{}
 	err := requester.
 		Route("info.v1").
@@ -71,7 +71,7 @@ func Info(id int64, token string) *common.HelloResponse {
 	return &helloResponse
 }
 
-func Fire(helloRequest *common.HelloRequest, token string) *common.HelloResponse {
+func Fire(token string,helloRequest *common.HelloRequest) *common.HelloResponse {
 	helloResponse := common.HelloResponse{}
 	err := requester.
 		Route("fire.v1").
