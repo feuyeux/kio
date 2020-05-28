@@ -4,7 +4,7 @@ use rsocket_rust_messaging::Requester;
 
 use crate::common::{HelloRequest, HelloResponse, HelloToken, HelloUser};
 
-const MIME_AUTH: &str = "message/x.rsocket.authentication.bearer.v0";
+const MIME_TYPE: &str = "message/x.rsocket.authentication.bearer.v0";
 
 pub struct KioRequester {
     pub requester: Requester
@@ -50,7 +50,7 @@ impl KioRequester {
         debug!("preflight hire: token={}", token);
         let result: Result<Option<HelloResponse>, Box<dyn Error>> = self.requester
             .route("hire.v1")
-            .metadata_raw(token, MIME_AUTH)
+            .metadata_raw(token, MIME_TYPE)
             .data(request)
             .retrieve_mono()
             .await
@@ -61,24 +61,30 @@ impl KioRequester {
         }
     }
 
-    pub async fn info(&self, token: &str, id: i64) {
+    pub async fn info(&self, token: &str, id: i64) -> Option<HelloResponse> {
         let result: Result<Option<HelloResponse>, Box<dyn Error>> = self.requester
             .route("info.v1")
-            .metadata_raw(token, MIME_AUTH)
+            .metadata_raw(token, MIME_TYPE)
             .data(id)
             .retrieve_mono()
             .await
             .block();
         match result {
-            Ok(v) => info!("Info << [Request-Response]: {:#?}", v),
-            Err(e) => error!("{}", e.to_string())
+            Ok(response) => {
+                info!("Info << [Request-Response]: {:#?}", response);
+                response
+            }
+            Err(e) => {
+                error!("Info << {}", e.to_string());
+                None
+            }
         }
     }
 
     pub async fn list(&self, token: &str) {
         let res: Vec<HelloResponse> = self.requester
             .route("list.v1")
-            .metadata_raw(token, MIME_AUTH)
+            .metadata_raw(token, MIME_TYPE)
             .retrieve_flux()
             .block()
             .await
@@ -89,7 +95,7 @@ impl KioRequester {
     pub async fn fire(&self, token: &str, request: HelloRequest) {
         let res: HelloResponse = self.requester
             .route("fire.v1")
-            .metadata_raw(token, MIME_AUTH)
+            .metadata_raw(token, MIME_TYPE)
             .data(request)
             .retrieve_mono()
             .await
@@ -101,7 +107,7 @@ impl KioRequester {
 
     pub async fn sign_out(&self, token: &str) {
         self.requester.route("signout.v1")
-            .metadata_raw(token, MIME_AUTH)
+            .metadata_raw(token, MIME_TYPE)
             .retrieve()
             .await
             .expect("SignOut failed!");

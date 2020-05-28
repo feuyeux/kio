@@ -64,7 +64,7 @@ func Info(id int64, token string) *common.HelloResponse {
 		RetrieveMono().
 		BlockTo(context.Background(), &helloResponse)
 	if err != nil {
-		log.Println("Hire Error", err)
+		log.Println("Info << ", err)
 	} else {
 		log.Printf("Info << [Request-Response] HelloResponse[%d %s]", helloResponse.Id, helloResponse.Value)
 	}
